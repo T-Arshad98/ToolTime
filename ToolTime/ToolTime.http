@@ -1,0 +1,6 @@
+@ToolTime_HostAddress = http://localhost:5281
+
+GET {{ToolTime_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
