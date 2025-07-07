@@ -1,0 +1,30 @@
+<div class="container mt-4">
+    <h1 class="text-primary">Home</h1>
+    <p class="lead">Welcome to the Home page!</p>
+
+    <div *ngIf="!isLoggedIn" class="alert alert-warning mt-4">
+        <p>You are not logged in.</p>
+        <button class="btn btn-primary" (click)="goToLogin()">Go to Login</button>
+    </div>
+
+    <div *ngIf="isLoggedIn && user" class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">User Summary</h5>
+            <ul class="list-group list-group-flush mb-3">
+                <li class="list-group-item"><strong>Username:</strong> {{ user.username }}</li>
+                <li class="list-group-item"><strong>User ID:</strong> {{ user.id }}</li>
+                <li class="list-group-item"><strong>Roles:</strong> <span *ngFor="let role of user.roles; let last = last">{{ role }}<span *ngIf="!last">, </span></span>
+                </li>
+                <li class="list-group-item d-flex align-items-center justify-content-between">
+                    <span><strong>Tools Checked Out:</strong> {{ checkedOutCount }}</span>
+                    <button class="btn btn-link" (click)="goToPage('checkout-records')">View</button>
+                </li>
+                <li class="list-group-item d-flex align-items-center justify-content-between">
+                    <span><strong>Maintenance Requests:</strong> {{ maintenanceCount }}</span>
+                    <button class="btn btn-link" (click)="goToPage('maintenance-requests')">View</button>
+                </li>
+                <li class="list-group-item"><strong>Logged In For:</strong> {{ loginDuration }}</li>
+            </ul>
+        </div>
+    </div>
+</div>

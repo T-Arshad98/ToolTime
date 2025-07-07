@@ -1,0 +1,15 @@
+<app-header></app-header>
+
+<!-- Alert Dialog Popup -->
+<div *ngIf="bannerMessage" class="alert-dialog-backdrop">
+  <div class="alert-dialog">
+    <div class="alert-dialog-message">{{ bannerMessage }}</div>
+    <button class="alert-dialog-btn" (click)="closeBanner()">OK</button>
+  </div>
+</div>
+
+<div class="main-content">
+  <router-outlet />
+</div>
+
+<app-footer></app-footer>

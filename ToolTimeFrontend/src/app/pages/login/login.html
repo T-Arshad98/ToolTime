@@ -1,0 +1,43 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <ng-container *ngIf="loading">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <div class="card" *ngIf="!loading">
+        <div class="card-body">
+          <ng-container *ngIf="!isLoggedIn(); else loggedInBlock">
+            <h3 class="card-title mb-4 text-center">Login</h3>
+            <form (ngSubmit)="login()" #loginForm="ngForm">
+              <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" id="username" class="form-control" name="username" [(ngModel)]="credentials.username" required>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" class="form-control" name="password" [(ngModel)]="credentials.password" required>
+              </div>
+              <button type="submit" class="btn btn-primary w-100" [disabled]="loginForm.invalid">Login</button>
+              <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+            </form>
+          </ng-container>
+          <ng-template #loggedInBlock>
+            <div class="alert alert-success text-center">
+              <div>Welcome, <strong>{{ user?.username }}</strong>!</div>
+              <div *ngIf="userRoles">Roles: <span *ngFor="let role of userRoles; let last = last">{{ role }}<span *ngIf="!last">, </span></span></div>
+              <button class="btn btn-outline-danger mt-3 w-100" (click)="logout()">Logout</button>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

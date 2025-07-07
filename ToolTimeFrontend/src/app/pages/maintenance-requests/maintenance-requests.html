@@ -1,0 +1,52 @@
+<div class="container mt-4">
+    <h1 class="text-primary">Maintenance Requests</h1>
+    <p class="lead">Welcome to the Maintenance Requests page!</p>
+    <p>Here you can find a list of maintenance requests.</p>
+
+    <div *ngIf="!isLoggedIn" class="alert alert-warning mt-4">
+        <p>You are not logged in.</p>
+        <button class="btn btn-primary" (click)="goToLogin()">Go to Login</button>
+    </div>
+
+    <div *ngIf="isLoggedIn">
+        <!-- Maintenance Request Submission Form -->
+        <form (ngSubmit)="submitRequest()" class="mb-4">
+            <div class="mb-3">
+                <label for="toolId" class="form-label">Tool</label>
+                <select id="toolId" class="form-control" [(ngModel)]="newRequest.toolId" name="toolId" required>
+                    <option *ngFor="let tool of tools" [value]="tool.id">{{ tool.name }}: {{ tool.id }}</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="issueDesc" class="form-label">Issue Description</label>
+                <textarea id="issueDesc" class="form-control" [(ngModel)]="newRequest.issueDesc" name="issueDesc" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select id="status" class="form-control" [(ngModel)]="newRequest.status" name="status" required>
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Resolved">Resolved</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success">Submit Maintenance Request</button>
+        </form>
+        <div *ngIf="maintenanceRequests.length === 0" class="alert alert-info mt-3">No maintenance requests found.</div>
+        <ul *ngIf="maintenanceRequests.length > 0" class="list-group">
+            <li *ngFor="let request of maintenanceRequests" class="list-group-item mb-3">
+                <strong class="h5">{{ request.tool }}</strong> 
+                <span class="badge bg-info text-dark ms-2">Tool Id: {{ request.toolId }}</span>
+                <br>
+                <span class="text-muted">Submitted by: </span> <span class="fw-semibold">{{ request.userId }}</span>
+                <br>
+                <span class="text-muted">Issue description: </span> <span class="fw-semibold">{{ request.issueDesc }}</span>
+                <br>
+                <span class="text-muted">Status: </span> <span class="fw-semibold">{{ request.status }}</span>
+                <br>
+                <span class="text-muted">Request creation date: </span> <span>{{ (request.createdAt| date:'shortDate')  || 'Not resolved yet'   }}</span>
+                <br>
+                <span class="text-muted">Request resolved date: </span> <span>{{ (request.resolvedAt| date:'shortDate')  || 'Not resolved yet'   }}</span>
+            </li>
+        </ul>
+    </div>
+</div>

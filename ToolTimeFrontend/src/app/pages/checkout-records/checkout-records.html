@@ -1,0 +1,49 @@
+<div class="container mt-4">
+    <h1 class="text-primary">Checkout Records</h1>
+    <p class="lead">Welcome to the Checkout Records page!</p>
+    <p>Here you can find a list of checkout records.</p>
+
+    <div *ngIf="!isLoggedIn" class="alert alert-warning mt-4">
+        <p>You are not logged in.</p>
+        <button class="btn btn-primary" (click)="goToLogin()">Go to Login</button>
+    </div>
+
+    <div *ngIf="isLoggedIn">
+        <form (ngSubmit)="submitCheckoutRecord()" class="mb-4 p-3 border rounded shadow-sm bg-light">
+            <div class="mb-3">
+                <label for="toolId" class="form-label">Tool</label>
+                <select id="toolId" class="form-control" [(ngModel)]="newCheckoutRecord.toolId" name="toolId" required>
+                    <option *ngFor="let tool of tools" [value]="tool.id">{{ tool.name }}: {{ tool.id }}</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="expectedReturnDateTime" class="form-label">Expected Return Date</label>
+                <input type="date" id="expectedReturnDateTime" class="form-control" [(ngModel)]="newCheckoutRecord.expectedReturnDateTime" name="expectedReturnDateTime" required />
+            </div>
+            <button type="submit" class="btn btn-success">Submit Checkout Record</button>
+        </form>
+        <div *ngIf="checkoutRecords.length === 0" class="alert alert-info mt-3">No checkout records found.</div>
+        <ul *ngIf="checkoutRecords.length > 0" class="list-group">
+            <li *ngFor="let record of checkoutRecords" class="list-group-item mb-3">
+                <div class="row align-items-center">
+                    <div class="col-9">
+                        <strong class="h5">{{ record.tool?.name }}</strong>
+                        <span class="badge bg-info text-dark ms-2">Tool Id: {{ record.toolId }}</span>
+                        <br>
+                        <span class="text-muted">Checked out by:</span> <span class="fw-semibold">{{ record.userId }}</span>
+                        <br>
+                        <span class="text-muted">Checkout date:</span> <span>{{ record.checkoutDateTime | date:'short' }}</span>
+                        <br>
+                        <span class="text-muted">Expected Return Date:</span> <span>{{ record.expectedReturnDateTime | date:'shortDate' }}</span>
+                        <br>
+                        <span class="text-muted">Actual Return Date:</span> <span>{{ record.actualReturn ? (record.actualReturn | date:'shortDate') : 'Not returned yet' }}</span>
+                    </div>
+                    <div class="col-3 text-end">
+                        <button *ngIf="!record.actualReturn" class="btn btn-outline-primary btn-sm" (click)="returnCheckoutRecord(record.id)">Return</button>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+    </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="container mt-4">
+    <h1 class="text-primary">Tool List</h1>
+    <p class="lead">Welcome to the Tool List page!</p>
+    <p>Here you can find a list of tools.</p>
+
+    <div *ngIf="!isLoggedIn" class="alert alert-warning mt-4">
+        <p>You are not logged in.</p>
+        <button class="btn btn-primary" (click)="goToLogin()">Go to Login</button>
+    </div>
+
+    <form *ngIf="isLoggedIn" class="mb-4 border rounded p-3 bg-light" #toolForm="ngForm" (ngSubmit)="addTool()">
+        <div class="row g-2">
+            <div class="col-md-4">
+                <input type="text" class="form-control" placeholder="Tool Name" name="name" [(ngModel)]="newTool.name" required>
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" placeholder="Tool Type" name="type" [(ngModel)]="newTool.type" required>
+            </div>
+        </div>
+        <div class="row g-2 mt-2">
+            <div class="col-md-4">
+                <input type="text" class="form-control" placeholder="Serial Number" name="serialNumber" [(ngModel)]="newTool.serialNumber">
+            </div>
+            <div class="col-md-4">
+                <input type="date" class="form-control" placeholder="Last Inspection Date" name="lastInspectionDate" [(ngModel)]="newTool.lastInspectionDate">
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" placeholder="Description" name="description" [(ngModel)]="newTool.description">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success mt-3" [disabled]="toolForm.invalid">Add Tool</button>
+    </form>
+
+    <div *ngIf="isLoggedIn">
+        <div *ngIf="tools.length === 0" class="alert alert-info mt-3">No tools found.</div>
+        <ul *ngIf="tools.length > 0" class="list-group">
+            <li *ngFor="let tool of tools" class="list-group-item mb-3">
+                <strong class="h5">{{ tool.name }}</strong> 
+                <span class="badge bg-info text-dark ms-2">{{ tool.type }}</span>
+                <br>
+                <span class="text-muted">Serial Number:</span> <span class="fw-semibold">{{ tool.serialNumber || 'N/A' }}</span>
+                <br>
+                <span class="text-muted">Description:</span> <span>{{ tool.description || 'No description available' }}</span>
+                <br>
+                <span class="text-muted">Last Inspection Date:</span> <span>{{ tool.lastInspectionDate | date:'shortDate' }}</span>
+            </li>
+        </ul>
+    </div>
+</div>
